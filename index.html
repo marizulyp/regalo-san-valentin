@@ -183,10 +183,13 @@
             }
         }
 
-        function playMusic() {
-            const music = document.getElementById('miMusica');
-            music.play();
-        }
+function playMusic() {
+    const music = document.getElementById('miMusica');
+    music.play().catch(error => {
+        console.log("El navegador bloqueó la reproducción automática. Intenta de nuevo.");
+    });
+}
     </script>
 </body>
+
 </html>
