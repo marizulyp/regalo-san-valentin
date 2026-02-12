@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Tí 💜</title>
+    
+    <meta property="og:title" content="Para Tí 💜">
+    <meta property="og:description" content="Haz clic para abrir mi corazón">
+    <meta property="og:image" content="miniatura.png"> 
+
+    <style>
+        :root {
+            --morado-claro: #ffe5ec;
+            --morado-claro: #c07cff;
+            --blanco: #ffffff;
+        }
+
+        body, html {
+            margin: 0; padding: 0;
+            height: 100%; width: 100%;
+            font-family: 'Arial', sans-serif;
+            background-color: var(--morado-claro);
+            overflow: hidden;
+            display: flex; justify-content: center; align-items: center;
+        }
+
+        .screen {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            width: 90%;
+            max-width: 400px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .active { display: flex; }
+
+        /* Pantalla 2: El Candado */
+        .lock-heart {
+            font-size: 80px;
+            cursor: pointer;
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.1));
+            transition: transform 0.3s;
+        }
+        .lock-heart:hover { transform: scale(1.1); }
+
+        /* Pantalla 3: Calculadora */
+        .calc-container {
+            background: white;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+        }
+        .display {
+            background: #fff0f3;
+            color: var(--morado-claro);
+            font-size: 1.2rem;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            min-height: 25px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+        button {
+            border: none;
+            background: white;
+            padding: 15px;
+            font-size: 1.2rem;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            transition: 0.2s;
+        }
+        button:active { transform: scale(0.9); background: var(--rosa-claro); }
+        .btn-heart { background: var(--morado-claro); color: white; }
+
+        /* Pantalla 4: Final */
+        .final-card {
+            background: white;
+            padding: 20px;
+            border-radius: 20px;
+            position: relative;
+        }
+        .final-card img { width: 100%; border-radius: 10px; }
+        .music-player {
+            background: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        
+        .msg { margin-top: 10px; font-weight: bold; }
+        .error { color: #ff4d6d; }
+        .success { color: #a04dff; }
+    </style>
+</head>
+<body>
+
+    <div id="screen2" class="screen active">
+        <div class="lock-heart" onclick="goToScreen(3)">🔒💜</div>
+        <p style="color: #000000;">Haz clic para abrir mi corazón</p>
+    </div>
+
+    <div id="screen3" class="screen">
+        <h2 style="color: #000000;">😻 Fecha Especial 😻</h2>
+        <div class="calc-container">
+            <div id="display" class="display">DD / MM / AAAA</div>
+            <div class="grid">
+                <button onclick="addNum('1')">1</button><button onclick="addNum('2')">2</button><button onclick="addNum('3')">3</button>
+                <button onclick="addNum('4')">4</button><button onclick="addNum('5')">5</button><button onclick="addNum('6')">6</button>
+                <button onclick="addNum('7')">7</button><button onclick="addNum('8')">8</button><button onclick="addNum('9')">9</button>
+                <button onclick="clearCalc()" style="font-size: 0.7rem;">Borrar</button>
+                <button onclick="addNum('0')">0</button>
+                <button class="btn-heart" onclick="checkDate()">💜</button>
+            </div>
+            <div id="feedback" class="msg"></div>
+        </div>
+    </div>
+
+    <div id="screen4" class="screen">
+        <div class="music-player">
+            <button onclick="playMusic()" style="box-shadow: none;">▶️</button>
+            <span>Te dedico esta canción ♫</span>
+        </div>
+<div class="final-card">
+    <h1 style="color: #a04dff;">Te amo feliz dia de san valentin 😻💜</h1>
+    <img src="foto1.jpeg" alt="Nuestro Amor" style="width: 100%; border-radius: 10px;">
+    <p>💜Gracias por ser mi compañero de vida💜</p>
+</div>
+
+    <audio id="miMusica" src="musica.mp3"></audio>
+
+    <script>
+        let inputDate = "";
+        const correctDate = "23072018"; // Cambia aquí tu fecha (formato DDMMAAAA)
+
+        function goToScreen(num) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById('screen' + num).classList.add('active');
+        }
+
+        function addNum(num) {
+            if (inputDate.length < 8) {
+                inputDate += num;
+                updateDisplay();
+            }
+        }
+
+        function clearCalc() {
+            inputDate = "";
+            updateDisplay();
+            document.getElementById('feedback').innerText = "";
+        }
+
+        function updateDisplay() {
+            let d = inputDate.padEnd(8, "_");
+            let formatted = `${d.substring(0,2)} / ${d.substring(2,4)} / ${d.substring(4,8)}`;
+            document.getElementById('display').innerText = formatted;
+        }
+
+        function checkDate() {
+            const feedback = document.getElementById('feedback');
+            if (inputDate === correctDate) {
+                feedback.innerText = "N&N 😻💜";
+                feedback.className = "msg success";
+                setTimeout(() => goToScreen(4), 1000);
+            } else {
+                feedback.innerText = "ups no :c";
+                feedback.className = "msg error";
+                setTimeout(clearCalc, 1500);
+            }
+        }
+
+        function playMusic() {
+            const music = document.getElementById('miMusica');
+            music.play();
+        }
+    </script>
+</body>
+</html>
